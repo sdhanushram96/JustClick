@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>{% block title %}Just Click {% endblock %}</title>
+    <link href="{% static "css/base.css" %}" rel="stylesheet">
+
+</head>
+<body>
+   
+    <div id="subheader" style="color:#FF3D00">
+	 <a href="/fruits"><img src="{% static "img/logo1.png" %}" alt="Just Click!" width="75" height="75"/> </a> Device ID : {{ user.get_username }}{{user.short_name}} &emsp;
+
+          {% if user.is_authenticated %}
+        <a href="{% url 'logout' %}">Logout</a>
+      {% else %}
+        <a href="{% url 'login' %}">Login</a> / <a href="{% url 'signup' %}">Signup</a>
+      {% endif %}
+        <div class="cart" style="color:#D50000"> 
+
+            {% with total_items=cart|length %}
+                {% if cart|length > 0 %}
+                    Your cart: 
+                    <a href="{% url "cart:cart_detail" %}">
+                        {{ total_items }} item{{ total_items|pluralize }}, Rs{{ cart.get_total_price }}
+                    </a>
+                {% else %}
+                    Your cart is empty.
+                {% endif %}
+            {% endwith %}
+<img src="{% static "img/cart.png" %}" alt="Just Click!" width="50" height="50"/>
+        </div>
+    </div>
+    <div id="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+</html>
